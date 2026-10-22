@@ -1,55 +1,34 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import { sql } from './config/db.js';
 import adminRoutes from './route.js'
+import { v2 as cloudinary } from 'cloudinary'
+import connectDB from './config/db.js';
 
 dotenv.config()
+
+cloudinary.config({
+  cloud_name: process.env.Cloud_Name as string,
+  api_key: process.env.Cloud_Api_Key as string,
+  api_secret: process.env.Cloud_Api_Secret as string,
+})
+
 
 const app = express()
 
 app.use(express.json())
 
 
-async function initDB() {
-    try {
-        await sql`
-      CREATE TABLE IF NOT EXISTS albums(
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
-        thumbnail VARCHAR(255) NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
+app.use('/api/v1', adminRoutes)
 
-        await sql`
-      CREATE TABLE IF NOT EXISTS songs(
-        id SERIAL PRIMARY KEY,
-        title VARCHAR(255) NOT NULL,
-        description VARCHAR(255) NOT NULL,
-        thumbnail VARCHAR(255),
-        audio VARCHAR(255) NOT NULL,
-        album_id INTEGER REFERENCES albums(id) ON DELETE SET NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      )
-    `;
-
-        console.log('✅ Database initialized successfully');
-    } catch (error) {
-        console.error('❌ Error initDB:', error);
-        throw error;
-    }
-}
-
-app.use('/api/v1',adminRoutes)
-
+app.use(connectDB)
 
 const PORT = process.env.PORT || 7600;
 
 const startServer = async () => {
-    app.listen(5000, () => {
-        console.log(`Server is Running on Port ${PORT}`)
-    })
+  await connectDB()
+  app.listen(5000, () => {
+    console.log(`Server is Running on Port ${PORT}`)
+  })
 }
 
 startServer()
