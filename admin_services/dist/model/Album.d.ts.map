@@ -1,0 +1,1 @@
+{"version":3,"file":"Album.d.ts","sourceRoot":"","sources":["../../src/model/Album.ts"],"names":[],"mappings":"AACA,OAAO,QAAQ,EAAE,EAAE,QAAQ,EAAU,MAAM,UAAU,CAAC;AAEtD,MAAM,WAAW,MAAO,SAAQ,QAAQ;IACpC,KAAK,EAAE,MAAM,CAAC;IACd,WAAW,EAAE,MAAM,CAAC;IACpB,SAAS,EAAE,MAAM,CAAC;IAClB,SAAS,EAAE,IAAI,CAAC;CACnB;AAoBD,eAAO,MAAM,KAAK;;;;;;;;;;EAA+C,CAAC"}
